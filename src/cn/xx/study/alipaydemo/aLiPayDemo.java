@@ -9,7 +9,7 @@ import com.alipay.api.domain.AlipayTradePayModel;
 import com.alipay.api.request.AlipayTradePayRequest;
 import com.alipay.api.response.AlipayTradePayResponse;
 
-public class aLiPayDemo {
+public class ALiPayDemo {
 
 	public static final String serverdevUrl = "https://openapi.alipaydev.com/gateway.do"; // 阿里支付调试接口
 	public static final String serverUrl = "https://openapi.alipay.com/gateway.do"; // 阿里支付线上接口
