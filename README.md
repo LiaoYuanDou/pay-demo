@@ -16,6 +16,7 @@
 				ALIPAY_PUBLIC_KEY, SIGN_TYPE);
 				
    ``  
+   
 3. 获取支付请求;
 
   ``
@@ -23,6 +24,7 @@
     AlipayTradePayRequest payRequest = new AlipayTradePayRequest();
     
   `` 
+  
 4. 支付请求中设置请求报文;
 
   ``
@@ -36,6 +38,7 @@
 	  	payRequest.setBizModel(payModel);
 		
   ``
+  
 5. 通过AlipayClient.execute(request)得到response;
 
   ``
@@ -43,6 +46,7 @@
     AlipayTradePayResponse payResponse = alipayClient.execute(payRequest);
     
   ``
+  
 6. 解析response.
  
 
