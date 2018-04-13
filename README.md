@@ -158,14 +158,87 @@
 		    // TODO 验签失败则记录异常日志，并在response中返回failure.
 		}
 		
+		
+		
 ### 微信支付接口接入
 
 1. 导包(SDK);
    wxpay-sdk-0.0.3.jar
 2. 写一个配置类实现WXPayConfig接口;
    重写里面的getAppID、getKey、getMchID、getCertStream、getHttpConnectTimeoutMs和getHttpReadTimeoutMs方法
+		   public class MyConfig implements WXPayConfig{
+
+		    private byte[] certData;
+
+		    public MyConfig() throws Exception {
+			String certPath = "/path/to/apiclient_cert.p12";
+			File file = new File(certPath);
+			InputStream certStream = new FileInputStream(file);
+			this.certData = new byte[(int) file.length()];
+			certStream.read(this.certData);
+			certStream.close();
+		    }
+
+		    public String getAppID() {
+			return "wx8888888888888888";
+		    }
+
+		    public String getMchID() {
+			return "12888888";
+		    }
+
+		    public String getKey() {
+			return "88888888888888888888888888888888";
+		    }
+
+		    public InputStream getCertStream() {
+			ByteArrayInputStream certBis = new ByteArrayInputStream(this.certData);
+			return certBis;
+		    }
+
+		    public int getHttpConnectTimeoutMs() {
+			return 8000;
+		    }
+
+		    public int getHttpReadTimeoutMs() {
+			return 10000;
+		    }
+		}
 3. new一个配置类和WXPay（配置类，签名加密算法，是否沙箱环境）;
 4. new一个hashMap<String,String>(),将数据封装在map中;
 5. 以map为参数调用wxPay类的方法可以得到一个返回数据的map;
 6. 解析返回数据map.
 
+	统一下单：
+		public class WXPayExample {
+
+		    public static void main(String[] args) throws Exception {
+
+			MyConfig config = new MyConfig();
+			WXPay wxpay = new WXPay(config);
+
+			Map<String, String> data = new HashMap<String, String>();
+			data.put("body", "腾讯充值中心-QQ会员充值");
+			data.put("out_trade_no", "2016090910595900000012");
+			data.put("device_info", "");
+			data.put("fee_type", "CNY");
+			data.put("total_fee", "1");
+			data.put("spbill_create_ip", "123.12.12.123");
+			data.put("notify_url", "http://www.example.com/wxpay/notify");
+			data.put("trade_type", "NATIVE");  // 此处指定为扫码支付
+			data.put("product_id", "12");
+
+			try {
+			    Map<String, String> resp = wxpay.unifiedOrder(data);
+			    System.out.println(resp);
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+		    }
+
+		}
+	
+	
+	
+	
+         
